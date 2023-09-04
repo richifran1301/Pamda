@@ -1,0 +1,13 @@
+.navBarIcons {
+  height: 40px;
+}
+
+.navBarButton {
+  background: none;
+  border: none;
+  margin: 10px;
+}
+
+.navContainer {
+  justify-content: center !important;
+}
