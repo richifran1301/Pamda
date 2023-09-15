@@ -6,14 +6,39 @@ import goalIcon from '../../../../assets/icons/goal.png';
 import NavBarBtn from './NavBarBtn';
 import '../../Styles/NavBar.css';
 
-function NavBar() {
+interface Props {
+  onSelectTab: (tabSelected: string) => void;
+  selectedTab: string;
+}
+
+function NavBar({ onSelectTab, selectedTab }: Props) {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+    <nav className="navbar navbar-expand-lg navbar-light bg-dark fixed-top">
       <div className="container-fluid navContainer">
-        <NavBarBtn linkIcon={houseIcon} />
-        <NavBarBtn linkIcon={tripIcon} />
-        <NavBarBtn linkIcon={froggieIcon} />
-        <NavBarBtn linkIcon={goalIcon} />
+        <NavBarBtn
+          linkIcon={houseIcon}
+          identityTab="Home"
+          onClickElement={onSelectTab}
+          activeClass={selectedTab === 'Home' ? 'activeTab' : ''}
+        />
+        <NavBarBtn
+          linkIcon={froggieIcon}
+          identityTab="Froggie"
+          onClickElement={onSelectTab}
+          activeClass={selectedTab === 'Froggie' ? 'activeTab' : ''}
+        />
+        <NavBarBtn
+          linkIcon={tripIcon}
+          identityTab="Adventure"
+          onClickElement={onSelectTab}
+          activeClass={selectedTab === 'Adventure' ? 'activeTab' : ''}
+        />
+        <NavBarBtn
+          linkIcon={goalIcon}
+          identityTab="Goal"
+          onClickElement={onSelectTab}
+          activeClass={selectedTab === 'Goal' ? 'activeTab' : ''}
+        />
       </div>
     </nav>
   );

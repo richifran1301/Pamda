@@ -1,0 +1,15 @@
+#mainDiv {
+    margin-top: 100px;
+}
+
+.homeContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.headerSeparator {
+    margin-left: 10em;
+    margin-right: 10em;
+    margin-top: 0px !important;
+}

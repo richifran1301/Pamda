@@ -1,3 +1,7 @@
+.activeTab {
+  transform: scale(1.5);
+}
+
 .navBarIcons {
   height: 40px;
 }
@@ -6,6 +10,11 @@
   background: none;
   border: none;
   margin: 10px;
+  transition: all .2s ease-in-out; 
+}
+
+.navBarButton:hover {
+  transform: scale(1.5);
 }
 
 .navContainer {

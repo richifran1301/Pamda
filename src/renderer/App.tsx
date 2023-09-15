@@ -1,14 +1,30 @@
+import { useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-// import icon from '../../assets/icon.svg';
 import NavBar from './Components/NavBar/NavBar';
-import HomePage from './Components/Home/Home';
+import HomeTab from './Components/Home/Home';
+import SectionHeader from './Components/Utils/SectionHeader';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function MainProgram() {
+  const [selectedTab, setSelectedTab] = useState('Home');
+
+  const handleTabClick = (tabSelected: string) => {
+    setSelectedTab(tabSelected);
+  };
+
+  const showSelectedTab = () => {
+    switch (selectedTab) {
+      case 'Home':
+        return <HomeTab />;
+      default:
+        return <SectionHeader title="Fotos de nosotros" />;
+    }
+  };
+
   return (
-    <div>
-      <NavBar />
-      <HomePage />
+    <div id="mainDiv">
+      <NavBar onSelectTab={handleTabClick} selectedTab={selectedTab} />
+      {showSelectedTab()}
     </div>
   );
 }
