@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import Singleton from 'utils/singleton';
 import NavBar from './Components/NavBar/NavBar';
 import HomeTab from './Components/Home/Home';
 import SectionHeader from './Components/Utils/SectionHeader';
@@ -10,14 +11,25 @@ function MainProgram() {
 
   const handleTabClick = (tabSelected: string) => {
     setSelectedTab(tabSelected);
+    console.log(Singleton.dataObject);
   };
 
   const showSelectedTab = () => {
     switch (selectedTab) {
       case 'Home':
         return <HomeTab />;
+      case 'Froggie':
+        return (
+          <SectionHeader title="Fotos de nosotros">
+            <p>Lorem ipsum</p>
+          </SectionHeader>
+        );
       default:
-        return <SectionHeader title="Fotos de nosotros" />;
+        return (
+          <SectionHeader title="Sección no implementada">
+            <p>Hola Mundo</p>
+          </SectionHeader>
+        );
     }
   };
 

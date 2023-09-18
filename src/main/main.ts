@@ -13,6 +13,7 @@ import fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
+import Global from '../utils/global';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -32,19 +33,16 @@ ipcMain.on('ipc-example', async (event, arg) => {
   event.reply('ipc-example', msgTemplate('pong'));
 });
 
-ipcMain.on('read-db', async (event) => {
+ipcMain.on(Global.DB_HANDLER, async (event) => {
   fs.readFile('./src/dataGen/imageRepo.json', 'utf8', (err, jsonString) => {
     if (err) {
-      const errorTemplate = (pingPong: string) =>
-        `Read db test failed: ${pingPong}`;
+      const errorTemplate = (errorString: string) =>
+        `Read db test failed: ${errorString}`;
       console.log('File read failed:', err);
-      event.reply('read-db', errorTemplate(`Error ${err}`));
+      event.reply(Global.DB_HANDLER, errorTemplate(`Error ${err}`));
     } else {
-      // images = JSON.parse(jsonString);
-      console.log('File read succed:', jsonString);
-      const msgTemplate = (pingPong: string) => `Read db test: ${pingPong}`;
-      console.log(msgTemplate(jsonString));
-      event.reply('read-db', msgTemplate(jsonString));
+      const msgTemplate = (dataString: string) => `${dataString}`;
+      event.reply(Global.DB_HANDLER, msgTemplate(jsonString));
     }
   });
 });
