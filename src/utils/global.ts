@@ -4,6 +4,8 @@ class Global {
   static WRITE_DB: string = 'WRITE_DB';
 
   static DB_HANDLER: string = 'DB_HANDLER';
+
+  static FROGGIE_TAB: string = 'Froggie';
 }
 
 export default Global;

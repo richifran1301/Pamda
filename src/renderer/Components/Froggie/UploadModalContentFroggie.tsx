@@ -1,20 +1,12 @@
-import React from 'react';
+import { ChangeEvent } from 'react';
 
 interface Props {
-  onFileChange: () => void;
+  onFileChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function UploadModalContentFroggie({ onFileChange }: Props) {
   return (
-    <form onSubmit={onFileChange}>
-      <input
-        type="file"
-        id="avatar"
-        name="avatar"
-        accept="image/png, image/jpeg"
-        onChange={onFileChange}
-      />
-    </form>
+    <input type="text" id="message" name="message" onChange={onFileChange} />
   );
 }
 

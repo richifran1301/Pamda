@@ -1,5 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+// import uploadIcon from '../../../../assets/icons/uploadIcon.png';
+import '../../Styles/Utils.css';
 
 interface Props {
   showModal: () => void;
@@ -7,8 +9,8 @@ interface Props {
 
 function UploadBtn({ showModal }: Props) {
   return (
-    <Button variant="primary" onClick={showModal}>
-      Launch vertically centered modal
+    <Button className="uploadBtn" variant="primary" onClick={showModal}>
+      Subir foto
     </Button>
   );
 }

@@ -1,35 +1,26 @@
 import { useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import Singleton from 'utils/singleton';
+import Global from 'utils/global';
 import NavBar from './Components/NavBar/NavBar';
 import HomeTab from './Components/Home/Home';
 import SectionHeader from './Components/Utils/SectionHeader';
 import UploadModal from './Components/Utils/UploadModal';
 import UploadBtn from './Components/Utils/UploadBtn';
-import UploadModalContentFroggie from './Components/Froggie/UploadModalContentFroggie';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function MainProgram() {
   const [selectedTab, setSelectedTab] = useState('Home');
   const [showModal, setShowModal] = useState(false);
-  // const [file, setFile] = useState('');
 
   const handleTabClick = (tabSelected: string) => {
     setSelectedTab(tabSelected);
-    console.log(Singleton.dataObject);
-  };
-
-  const handleFileChange = (event: Event) => {
-    event.preventDefault();
-
-    console.log(event);
   };
 
   const showSelectedTab = () => {
     switch (selectedTab) {
       case 'Home':
         return <HomeTab />;
-      case 'Froggie':
+      case Global.FROGGIE_TAB:
         return (
           <>
             <SectionHeader title="Fotos de nosotros">
@@ -39,11 +30,8 @@ function MainProgram() {
               modalTitle="Subir foto"
               show={showModal}
               onHide={() => setShowModal(false)}
-            >
-              <UploadModalContentFroggie
-                onFileChange={() => handleFileChange}
-              />
-            </UploadModal>
+              currentTab={selectedTab}
+            />
             <UploadBtn showModal={() => setShowModal(true)} />
           </>
         );

@@ -1,14 +1,29 @@
-import { ReactNode } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { ChangeEvent } from 'react';
+import Global from 'utils/global';
+import UploadModalContentFroggie from '../Froggie/UploadModalContentFroggie';
 
 interface Props {
   onHide: () => void;
   show: boolean;
   modalTitle: string;
-  children: ReactNode;
+  currentTab: string;
 }
 
-function UploadModal({ onHide, show, modalTitle, children }: Props) {
+function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    console.log(event.target.value);
+  };
+
+  const setModalBody = () => {
+    switch (currentTab) {
+      case Global.FROGGIE_TAB:
+        return <UploadModalContentFroggie onFileChange={handleFileChange} />;
+      default:
+        return <div>Tab no existente</div>;
+    }
+  };
+
   return (
     <Modal
       show={show}
@@ -21,7 +36,7 @@ function UploadModal({ onHide, show, modalTitle, children }: Props) {
           {modalTitle}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{children}</Modal.Body>
+      <Modal.Body>{setModalBody()}</Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Cerrar</Button>
         <Button type="submit">Subir</Button>
