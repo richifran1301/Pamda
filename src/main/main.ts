@@ -27,6 +27,32 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
+const pathImageDir = path.join(__dirname, '../../dataGen', 'photoAlbum');
+
+const copyImageToDirectory = (file: {
+  photoName: string;
+  photoPath: string;
+}) => {
+  const fileName = file.photoName;
+  const pathToWrite = path.join(pathImageDir, fileName);
+  const pathToFile = file.photoPath;
+  fs.readFile(pathToFile, (err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      // const buf = Buffer.from(data, 'base64');
+      const buf = Buffer.from(data);
+      fs.writeFile(pathToWrite, buf, (err2) => {
+        if (err2) {
+          console.log(err2);
+        } else {
+          console.log('Success file written');
+        }
+      });
+    }
+  });
+};
+
 ipcMain.on('ipc-example', async (event, arg) => {
   const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
   console.log(msgTemplate(arg));
@@ -34,7 +60,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
 });
 
 ipcMain.on(Global.DB_HANDLER, async (event) => {
-  fs.readFile('./src/dataGen/imageRepo.json', 'utf8', (err, jsonString) => {
+  fs.readFile('./dataGen/imageRepo.json', 'utf8', (err, jsonString) => {
     if (err) {
       const errorTemplate = (errorString: string) =>
         `Read db test failed: ${errorString}`;
@@ -45,6 +71,10 @@ ipcMain.on(Global.DB_HANDLER, async (event) => {
       event.reply(Global.DB_HANDLER, msgTemplate(jsonString));
     }
   });
+});
+
+ipcMain.on(Global.UPLOAD_IMAGE, async (event, imageObject) => {
+  copyImageToDirectory(imageObject);
 });
 
 if (process.env.NODE_ENV === 'production') {

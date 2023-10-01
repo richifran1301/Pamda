@@ -6,6 +6,8 @@ class Global {
   static DB_HANDLER: string = 'DB_HANDLER';
 
   static FROGGIE_TAB: string = 'Froggie';
+
+  static UPLOAD_IMAGE: string = 'UPLOAD_IMAGE';
 }
 
 export default Global;
