@@ -1,6 +1,7 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useState, ChangeEvent } from 'react';
 import Global from 'utils/global';
+// import Singleton from 'utils/singleton';
 import UploadModalContentFroggie from '../Froggie/UploadModalContentFroggie';
 
 interface Props {
@@ -13,33 +14,88 @@ interface Props {
 function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
   const [fileName, setFileName] = useState('');
   const [filePath, setFilePath] = useState('');
+  const [fileDate, setFileDate] = useState('');
   const [photoTitle, setPhotoTitle] = useState('');
+  const [btnDisabled, setBtnDisabled] = useState(true);
+
+  const uploadObjectFroggie = {
+    photoPath: filePath,
+    photoName: fileName,
+    photoDate: fileDate,
+    titlePhoto: photoTitle,
+  };
+
+  const clearState = () => {
+    setFileName('');
+    setFilePath('');
+    setPhotoTitle('');
+    setBtnDisabled(true);
+  };
+
+  const checkRequiredFields = (
+    photoTitleEvent: string,
+    filePathEvent: string
+  ) => {
+    const filePathIn = filePathEvent !== '';
+    const photoTitleIn = photoTitleEvent !== '';
+    console.log(photoTitle);
+    console.log(filePath);
+    if (photoTitleIn && filePathIn) {
+      setBtnDisabled(false);
+    } else {
+      setBtnDisabled(true);
+    }
+  };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Check if event.target.files is 'null'
     if (!event.target.files) return;
     setFileName(event.target.files[0].name);
     setFilePath(event.target.files[0].path);
+    const date = new Date(event.target.files[0].lastModified); // Format date
+    setFileDate(date.toLocaleDateString('en-GB'));
+    checkRequiredFields(photoTitle, event.target.files[0].path);
   };
 
   const handlePhotoTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setPhotoTitle(event.target.value);
+    checkRequiredFields(event.target.value, filePath);
   };
 
-  const buildUploadObject = () => {
-    const uploadObject = {
-      photoPath: filePath,
-      photoName: fileName,
-      titlePhoto: photoTitle,
-    };
-
-    return uploadObject;
+  const handleSendMsgToUpdateImageRepository = () => {
+    window.electron.ipcRenderer.sendMessage(
+      Global.WRITE_DB,
+      uploadObjectFroggie
+    );
+    window.electron.ipcRenderer.once(Global.WRITE_DB, (msg) => {
+      if (msg === Global.SUCCESS_MSG) {
+        // Do success.
+        console.log(`msg: ${msg}`);
+        clearState();
+      } else if (msg === Global.FAILED_MSG) {
+        // Do failed.
+        console.log(`msg: ${msg}`);
+      }
+    });
   };
 
   const handleUploadAction = () => {
-    const objectToSend = buildUploadObject();
-    console.log(objectToSend);
-    window.electron.ipcRenderer.sendMessage(Global.UPLOAD_IMAGE, objectToSend);
+    // Ping backend to handle copy image.
+    window.electron.ipcRenderer.sendMessage(
+      Global.UPLOAD_IMAGE,
+      uploadObjectFroggie
+    );
+    // Wait for image to be copied.
+    window.electron.ipcRenderer.once(Global.UPLOAD_IMAGE, (msg) => {
+      if (msg === Global.SUCCESS_MSG) {
+        // Do success.
+        console.log(`msg: ${msg}`);
+        handleSendMsgToUpdateImageRepository();
+      } else if (msg === Global.FAILED_MSG) {
+        // Do failed.
+        console.log(`msg: ${msg}`);
+      }
+    });
   };
 
   const setModalBody = () => {
@@ -71,7 +127,9 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
       <Modal.Body>{setModalBody()}</Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Cerrar</Button>
-        <Button onClick={handleUploadAction}>Subir</Button>
+        <Button onClick={handleUploadAction} disabled={btnDisabled}>
+          Subir
+        </Button>
       </Modal.Footer>
     </Modal>
   );

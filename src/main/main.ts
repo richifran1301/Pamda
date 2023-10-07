@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint global-require: off, no-console: off, promise/always-return: off */
 
 /**
@@ -10,10 +11,12 @@
  */
 import path from 'path';
 import fs from 'fs';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, IpcMainEvent } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Global from '../utils/global';
+import Singleton from '../utils/singleton';
+import DataHandler from './dataHandler';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 
@@ -29,35 +32,34 @@ let mainWindow: BrowserWindow | null = null;
 
 const pathImageDir = path.join(__dirname, '../../dataGen', 'photoAlbum');
 
-const copyImageToDirectory = (file: {
-  photoName: string;
-  photoPath: string;
-}) => {
+const copyImageToDirectory = (
+  file: {
+    photoName: string;
+    photoPath: string;
+  },
+  event: IpcMainEvent
+) => {
   const fileName = file.photoName;
   const pathToWrite = path.join(pathImageDir, fileName);
   const pathToFile = file.photoPath;
+  console.log(Singleton.imgData);
   fs.readFile(pathToFile, (err, data) => {
     if (err) {
-      console.log(err);
+      console.log(`READ ERROR: ${err}`);
+      event.reply(Global.UPLOAD_IMAGE, Global.FAILED_MSG);
     } else {
-      // const buf = Buffer.from(data, 'base64');
       const buf = Buffer.from(data);
       fs.writeFile(pathToWrite, buf, (err2) => {
         if (err2) {
-          console.log(err2);
+          console.log(`WRITE ERROR: ${err2}`);
+          event.reply(Global.UPLOAD_IMAGE, Global.FAILED_MSG);
         } else {
-          console.log('Success file written');
+          event.reply(Global.UPLOAD_IMAGE, Global.SUCCESS_MSG);
         }
       });
     }
   });
 };
-
-ipcMain.on('ipc-example', async (event, arg) => {
-  const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
-  console.log(msgTemplate(arg));
-  event.reply('ipc-example', msgTemplate('pong'));
-});
 
 ipcMain.on(Global.DB_HANDLER, async (event) => {
   fs.readFile('./dataGen/imageRepo.json', 'utf8', (err, jsonString) => {
@@ -68,13 +70,18 @@ ipcMain.on(Global.DB_HANDLER, async (event) => {
       event.reply(Global.DB_HANDLER, errorTemplate(`Error ${err}`));
     } else {
       const msgTemplate = (dataString: string) => `${dataString}`;
+      Singleton.setImgObject(JSON.parse(jsonString));
       event.reply(Global.DB_HANDLER, msgTemplate(jsonString));
     }
   });
 });
 
 ipcMain.on(Global.UPLOAD_IMAGE, async (event, imageObject) => {
-  copyImageToDirectory(imageObject);
+  copyImageToDirectory(imageObject, event);
+});
+
+ipcMain.on(Global.WRITE_DB, async (event, imageObject) => {
+  DataHandler.saveRecordToImageRepository(imageObject);
 });
 
 if (process.env.NODE_ENV === 'production') {

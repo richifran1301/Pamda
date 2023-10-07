@@ -8,6 +8,12 @@ class Global {
   static FROGGIE_TAB: string = 'Froggie';
 
   static UPLOAD_IMAGE: string = 'UPLOAD_IMAGE';
+
+  static SUCCESS_MSG: string = 'SUCCESS';
+
+  static FAILED_MSG: string = 'FAILED';
+
+  static ID_CONCATENATION: string = 'IMG-';
 }
 
 export default Global;
