@@ -1,6 +1,6 @@
 import { createRoot } from 'react-dom/client';
 import Global from 'utils/global';
-import Singleton from 'utils/singleton';
+import { Singleton } from 'utils/singleton';
 import App from './App';
 
 const container = document.getElementById('root') as HTMLElement;

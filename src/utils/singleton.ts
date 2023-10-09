@@ -1,6 +1,6 @@
 export interface froggie {
   id: string;
-  nameOfImage: string;
+  photoName: string;
   photoTitle: string;
   date: string;
 }
@@ -13,17 +13,15 @@ interface dataObject {
 export class Singleton {
   static imgData: dataObject;
   /* Structure:
-      {
-        "coupleImages": [{"id": nameOfImage, "title": photoTitle, "date": photoDate}]
-      }
-  
+      {"idCounter":0, "froggieImages":[]}
   */
 
   static setImgObject(data: dataObject): void {
     this.imgData = data;
   }
 
-  static getIdCounter(): number {
+  static incrementIdCounter(): number {
+    this.imgData.idCounter += 1;
     return this.imgData.idCounter;
   }
 
@@ -33,6 +31,19 @@ export class Singleton {
 
   static addFroggieElement(element: froggie): void {
     this.imgData.froggieImages.push(element);
+  }
+
+  static searchForDuplicatedName(fileName: string): boolean {
+    const list = this.getFroggieImages();
+    const listLength = list.length;
+    let exists = false;
+    for (let i = 0; i < listLength; i += 1) {
+      if (fileName === list[i].photoName) {
+        exists = true;
+        break;
+      }
+    }
+    return exists;
   }
 }
 

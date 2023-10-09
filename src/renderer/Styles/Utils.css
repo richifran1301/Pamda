@@ -5,3 +5,15 @@
     margin-bottom: 20px;
     margin-right: 20px;
 }
+
+.invisibleElement {
+    visibility: hidden;
+}
+
+.uploadModalFooter {
+    justify-content: space-between !important;
+}
+
+.confirmBtn, .closeBtn {
+    margin: 5px;
+}
