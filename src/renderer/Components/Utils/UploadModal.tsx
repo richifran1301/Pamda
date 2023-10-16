@@ -25,7 +25,6 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
   const [alertType, setAlertType] = useState('');
 
   const uploadObjectFroggie = {
-    photoPath: filePath,
     photoName: fileName,
     photoDate: fileDate,
     titlePhoto: photoTitle,
@@ -43,7 +42,6 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     photoTitleEvent: string,
     filePathEvent: string
   ) => {
-    console.log(`${photoTitleEvent} ${filePathEvent}`);
     const filePathIn = filePathEvent !== '';
     const photoTitleIn = photoTitleEvent !== '';
     if (photoTitleIn && filePathIn) {
@@ -78,6 +76,16 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     setShowAlert(true);
   };
 
+  const updateLocalData = () => {
+    window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
+
+    // calling IPC exposed from preload script
+    window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
+      const jsonObject = JSON.parse(arg);
+      Singleton.setImgObject(jsonObject);
+    });
+  };
+
   const sendMsgToUpdateImageRepository = () => {
     window.electron.ipcRenderer.sendMessage(
       Global.WRITE_DB,
@@ -87,6 +95,7 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
       if (msg === Global.SUCCESS_MSG) {
         // Do success.
         console.log(`msg: ${msg}`);
+        updateLocalData();
         clearState();
         showUploadStateMsg(Global.SUCCESS_MSG, '¡Foto subida!');
       } else if (msg === Global.FAILED_MSG) {
@@ -100,7 +109,8 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     // Ping backend to handle copy image.
     window.electron.ipcRenderer.sendMessage(
       Global.UPLOAD_IMAGE,
-      uploadObjectFroggie
+      uploadObjectFroggie,
+      filePath
     );
     // Wait for image to be copied.
     window.electron.ipcRenderer.once(Global.UPLOAD_IMAGE, (msg) => {

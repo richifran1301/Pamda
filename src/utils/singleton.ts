@@ -12,6 +12,8 @@ interface dataObject {
 
 export class Singleton {
   static imgData: dataObject;
+
+  static pathToImageDirectory: string;
   /* Structure:
       {"idCounter":0, "froggieImages":[]}
   */
@@ -20,12 +22,16 @@ export class Singleton {
     this.imgData = data;
   }
 
+  static setPathToImageDirectory(path: string): void {
+    this.pathToImageDirectory = path;
+  }
+
   static incrementIdCounter(): number {
     this.imgData.idCounter += 1;
     return this.imgData.idCounter;
   }
 
-  static getFroggieImages(): dataObject['froggieImages'] {
+  static getFroggieImages(): Array<froggie> {
     return this.imgData.froggieImages;
   }
 

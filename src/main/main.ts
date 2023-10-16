@@ -45,12 +45,16 @@ ipcMain.on(Global.DB_HANDLER, async (event) => {
   });
 });
 
-ipcMain.on(Global.UPLOAD_IMAGE, async (event, imageObject) => {
-  DataHandler.copyImageToDirectory(imageObject, event);
+ipcMain.on(Global.UPLOAD_IMAGE, async (event, imageObject, filePath) => {
+  DataHandler.copyImageToDirectory(imageObject, filePath, event);
 });
 
 ipcMain.on(Global.WRITE_DB, async (event, imageObject) => {
   DataHandler.saveRecordToImageRepository(imageObject, event);
+});
+
+ipcMain.on(Global.PATH_IMG_DIRECTORY, async (event) => {
+  event.reply(Global.PATH_IMG_DIRECTORY, DataHandler.getImageDirectoryPath());
 });
 
 if (process.env.NODE_ENV === 'production') {
@@ -97,6 +101,7 @@ const createWindow = async () => {
     height: 728,
     icon: getAssetPath('icon.png'),
     webPreferences: {
+      webSecurity: false,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),

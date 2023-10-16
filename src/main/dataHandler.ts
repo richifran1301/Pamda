@@ -39,12 +39,12 @@ class DataHandler {
       photoName: string;
       photoPath: string;
     },
+    filePath: string,
     event: IpcMainEvent
   ): void {
     const fileName = file.photoName;
     const pathToWrite = path.join(PATH_IMAGE_DIRECTORY, fileName);
-    const pathToFile = file.photoPath;
-    fs.readFile(pathToFile, (err, data) => {
+    fs.readFile(filePath, (err, data) => {
       if (err) {
         console.log(`READ ERROR: ${err}`);
         event.reply(Global.UPLOAD_IMAGE, Global.FAILED_MSG);
@@ -60,6 +60,10 @@ class DataHandler {
         });
       }
     });
+  }
+
+  static getImageDirectoryPath(): string {
+    return PATH_IMAGE_DIRECTORY;
   }
 }
 

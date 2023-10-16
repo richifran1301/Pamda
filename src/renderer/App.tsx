@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import Global from 'utils/global';
+import { Singleton } from 'utils/singleton';
 import NavBar from './Components/NavBar/NavBar';
 import HomeTab from './Components/Home/Home';
 import SectionHeader from './Components/Utils/SectionHeader';
 import UploadModal from './Components/Utils/UploadModal';
 import UploadBtn from './Components/Utils/UploadBtn';
+import AlbumGrid from './Components/Utils/AlbumGrid';
 import 'bootstrap/dist/css/bootstrap.css';
 
 function MainProgram() {
@@ -32,6 +34,7 @@ function MainProgram() {
               onHide={() => setShowModal(false)}
               currentTab={selectedTab}
             />
+            <AlbumGrid photoList={Singleton.getFroggieImages()} />
             <UploadBtn showModal={() => setShowModal(true)} />
           </>
         );
