@@ -58,10 +58,12 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
       setBtnDisabled(true);
       return;
     }
-    setFileName(event.target.files[0].name);
-    setFilePath(event.target.files[0].path);
-    const date = new Date(event.target.files[0].lastModified); // Format date
-    setFileDate(date.toLocaleDateString('en-GB'));
+    const file = event.target.files[0];
+    setFileName(file.name);
+    setFilePath(file.path);
+    console.log(file);
+    const date = new Date(file.lastModified);
+    setFileDate(date.toLocaleDateString('en-GB')); // Format date
     checkRequiredFields(photoTitle, event.target.files[0].path);
   };
 

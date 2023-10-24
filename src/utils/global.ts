@@ -20,6 +20,10 @@ class Global {
 
   // Data
   static ID_CONCATENATION: string = 'IMG-';
+
+  static VERTICAL_PHOTO: string = 'verticalImg';
+
+  static HORIZONTAL_PHOTO: string = 'horizontalImg';
 }
 
 export default Global;

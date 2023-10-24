@@ -1,11 +1,12 @@
 import React from 'react';
+// eslint-disable-next-line import/no-named-as-default
 import FroggieImage from '../Froggie/FroggieImage';
 
 interface Props {
   photoList: Array<{
     id: string;
     photoName: string;
-    date: string;
+    photoDate: string;
     photoTitle?: string;
   }>;
 }
@@ -13,7 +14,11 @@ interface Props {
 function AlbumGrid({ photoList }: Props) {
   const setPhotosInGrid = () => {
     return photoList.map((item) => (
-      <FroggieImage imgName={item.photoName} imgId={item.id} />
+      <FroggieImage
+        imgName={item.photoName}
+        imgId={item.id}
+        imgDate={item.photoDate}
+      />
     ));
   };
   return (

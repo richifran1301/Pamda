@@ -17,3 +17,16 @@
 .confirmBtn, .closeBtn {
     margin: 5px;
 }
+
+.verticalImg {
+    height: 18em;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 60%;
+}
+
+.horizontalImg {
+    display: block;
+    max-width: 100%;
+}
