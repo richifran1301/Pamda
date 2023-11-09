@@ -2,7 +2,7 @@ export interface froggie {
   id: string;
   photoName: string;
   photoTitle: string;
-  date: string;
+  photoDate: string;
 }
 
 interface dataObject {

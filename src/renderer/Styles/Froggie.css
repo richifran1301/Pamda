@@ -20,4 +20,11 @@
     background-color: #FAF8F8;
     overflow: overlay;
     display: flex;
+    position: relative;
+}
+
+.deleteBtn {
+    position: absolute;
+    top: 4px;
+    right: 8px;
 }

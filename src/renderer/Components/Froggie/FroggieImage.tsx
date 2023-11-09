@@ -7,8 +7,9 @@ interface Props {
   imgName: string;
   imgDate: string;
   imgId: string;
+  showDeleteAlert: (id: string) => void;
 }
-function FroggieImage({ imgName, imgId, imgDate }: Props) {
+function FroggieImage({ imgName, imgId, imgDate, showDeleteAlert }: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgClass, setImgClass] = useState('imgCard');
   const getImagePath = () => {
@@ -24,9 +25,21 @@ function FroggieImage({ imgName, imgId, imgDate }: Props) {
       setImgClass(`${imgOrientation}`);
     }
   };
+
+  const handleShowDeleteAlert = () => {
+    showDeleteAlert(imgId);
+  };
+
   return (
-    <div className="froggieWrapper col-md-3" key={imgId}>
+    <div className="froggieWrapper col-md-3 col-sm-2">
       <div className="froggieCard">
+        <button
+          type="button"
+          className="btn-close deleteBtn"
+          aria-label="Close"
+          onClick={handleShowDeleteAlert}
+        />
+        <p className="dateText">{imgDate}</p>
         <img
           src={getImagePath()}
           className={imgClass}
@@ -35,7 +48,6 @@ function FroggieImage({ imgName, imgId, imgDate }: Props) {
           ref={imgRef}
           onLoad={onLoad}
         />
-        <p className="dateText">{imgDate}</p>
       </div>
     </div>
   );

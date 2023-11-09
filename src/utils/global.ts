@@ -24,6 +24,12 @@ class Global {
   static VERTICAL_PHOTO: string = 'verticalImg';
 
   static HORIZONTAL_PHOTO: string = 'horizontalImg';
+
+  // Messages
+
+  static DELETE_ALERT_TITLE: string = 'Borrar foto';
+
+  static DELETE_ALERT_BODY: string = '¿Deseas borrar esta foto?';
 }
 
 export default Global;
