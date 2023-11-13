@@ -5,7 +5,6 @@ import App from './App';
 
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
-root.render(<App />);
 
 window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
 
@@ -13,6 +12,7 @@ window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
 window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
   const jsonObject = JSON.parse(arg);
   Singleton.setImgObject(jsonObject);
+  root.render(<App />);
 });
 
 window.electron.ipcRenderer.sendMessage(Global.PATH_IMG_DIRECTORY);

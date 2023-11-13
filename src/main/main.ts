@@ -57,6 +57,14 @@ ipcMain.on(Global.PATH_IMG_DIRECTORY, async (event) => {
   event.reply(Global.PATH_IMG_DIRECTORY, DataHandler.getImageDirectoryPath());
 });
 
+ipcMain.on(Global.DELETE_IMAGE, async (event, imgName) => {
+  DataHandler.deleteImageFile(imgName, event);
+});
+
+ipcMain.on(Global.DELETE_RECORD, async (event, imgId) => {
+  DataHandler.deleteRecordFromImageRepository(imgId, event);
+});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

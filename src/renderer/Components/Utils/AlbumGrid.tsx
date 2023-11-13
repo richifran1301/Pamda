@@ -1,6 +1,7 @@
 import { useState } from 'react';
 // eslint-disable-next-line import/no-named-as-default
 import Global from 'utils/global';
+import { froggie } from 'utils/singleton';
 import DeleteModal from './DeleteModal';
 import FroggieImage from '../Froggie/FroggieImage';
 
@@ -11,9 +12,10 @@ interface Props {
     photoDate: string;
     photoTitle?: string;
   }>;
+  onUpdatePhotoList: (newList: Array<froggie>) => void;
 }
 
-function AlbumGrid({ photoList }: Props) {
+function AlbumGrid({ photoList, onUpdatePhotoList }: Props) {
   const [showAlert, setShowAlert] = useState(false);
   const [idSelected, setIdSelected] = useState('');
 
@@ -40,6 +42,7 @@ function AlbumGrid({ photoList }: Props) {
         hideHandler={() => setShowAlert(false)}
         title={Global.DELETE_ALERT_TITLE}
         body={Global.DELETE_ALERT_BODY}
+        updateHandler={(newList: Array<froggie>) => onUpdatePhotoList(newList)}
         imgId={idSelected}
       />
       <div className="container-fluid">

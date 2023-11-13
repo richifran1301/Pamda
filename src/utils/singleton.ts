@@ -1,3 +1,5 @@
+import Global from './global';
+
 export interface froggie {
   id: string;
   photoName: string;
@@ -36,7 +38,20 @@ export class Singleton {
   }
 
   static addFroggieElement(element: froggie): void {
-    this.imgData.froggieImages.push(element);
+    this.imgData.froggieImages.unshift(element);
+  }
+
+  static deleteImageById(imgId: string): number {
+    let index = Global.INITIAL_LOOP_VALUE;
+    const array = this.getFroggieImages();
+    for (let i = 0; i < array.length; i += 1) {
+      if (array[i].id === imgId) {
+        index = i;
+        break;
+      }
+    }
+    this.imgData.froggieImages.splice(index, 1);
+    return index;
   }
 
   static searchForDuplicatedName(fileName: string): boolean {

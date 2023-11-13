@@ -1,7 +1,7 @@
 import { Modal, Button } from 'react-bootstrap';
 import { useState, ChangeEvent } from 'react';
 import Global from 'utils/global';
-import { Singleton } from 'utils/singleton';
+import { Singleton, froggie } from 'utils/singleton';
 import Alert from './Alert';
 import UploadModalContentFroggie from '../Froggie/UploadModalContentFroggie';
 
@@ -10,9 +10,16 @@ interface Props {
   show: boolean;
   modalTitle: string;
   currentTab: string;
+  handleUpdatePhotoList: (newList: Array<froggie>) => void;
 }
 
-function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
+function UploadModal({
+  onHide,
+  handleUpdatePhotoList,
+  show,
+  modalTitle,
+  currentTab,
+}: Props) {
   const [fileName, setFileName] = useState('');
   const [filePath, setFilePath] = useState('');
   const [fileDate, setFileDate] = useState('');
@@ -61,7 +68,6 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     const file = event.target.files[0];
     setFileName(file.name);
     setFilePath(file.path);
-    console.log(file);
     const date = new Date(file.lastModified);
     setFileDate(date.toLocaleDateString('en-GB')); // Format date
     checkRequiredFields(photoTitle, event.target.files[0].path);
@@ -78,6 +84,12 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     setShowAlert(true);
   };
 
+  const handleCloseAction = () => {
+    clearState();
+    setShowAlert(false);
+    onHide();
+  };
+
   const updateLocalData = () => {
     window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
 
@@ -85,6 +97,8 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
       const jsonObject = JSON.parse(arg);
       Singleton.setImgObject(jsonObject);
+      handleUpdatePhotoList(Singleton.getFroggieImages());
+      handleCloseAction();
     });
   };
 
@@ -96,13 +110,13 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     window.electron.ipcRenderer.once(Global.WRITE_DB, (msg) => {
       if (msg === Global.SUCCESS_MSG) {
         // Do success.
-        console.log(`msg: ${msg}`);
         updateLocalData();
-        clearState();
-        showUploadStateMsg(Global.SUCCESS_MSG, '¡Foto subida!');
       } else if (msg === Global.FAILED_MSG) {
         // Do failed.
-        console.log(`msg: ${msg}`);
+        showUploadStateMsg(
+          Global.FAILED_MSG,
+          'No se ha podido leer la base de datos.'
+        );
       }
     });
   };
@@ -118,16 +132,19 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
     window.electron.ipcRenderer.once(Global.UPLOAD_IMAGE, (msg) => {
       if (msg === Global.SUCCESS_MSG) {
         // Do success.
-        console.log(`msg: ${msg}`);
         sendMsgToUpdateImageRepository();
       } else if (msg === Global.FAILED_MSG) {
         // Do failed.
-        console.log(`msg: ${msg}`);
+        showUploadStateMsg(
+          Global.FAILED_MSG,
+          'No se ha podido subir la imagen.'
+        );
       }
     });
   };
 
   const handleUploadAction = () => {
+    setBtnDisabled(true);
     const duplicatedName = Singleton.searchForDuplicatedName(fileName);
     if (!duplicatedName) {
       sendMsgToCopyImageToDirectory();
@@ -135,11 +152,6 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
       showUploadStateMsg(Global.FAILED_MSG, 'Foto duplicada.');
       console.log('Duplicated image');
     }
-  };
-
-  const handleCloseAction = () => {
-    clearState();
-    onHide();
   };
 
   const setModalBody = () => {
@@ -163,7 +175,7 @@ function UploadModal({ onHide, show, modalTitle, currentTab }: Props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton onClick={onHide}>
+      <Modal.Header closeButton onClick={handleCloseAction}>
         <Modal.Title id="contained-modal-title-vcenter">
           {modalTitle}
         </Modal.Title>

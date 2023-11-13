@@ -26,7 +26,6 @@ class DataHandler {
     Singleton.addFroggieElement(imageObject); // Append new Froggie Element.
     fs.writeFile(IMAGE_REPO_PATH, JSON.stringify(Singleton.imgData), (err2) => {
       if (err2) {
-        console.log(`WRITE ERROR: ${err2}`);
         event.reply(Global.WRITE_DB, Global.FAILED_MSG);
       } else {
         event.reply(Global.WRITE_DB, Global.SUCCESS_MSG);
@@ -46,18 +45,49 @@ class DataHandler {
     const pathToWrite = path.join(PATH_IMAGE_DIRECTORY, fileName);
     fs.readFile(filePath, (err, data) => {
       if (err) {
-        console.log(`READ ERROR: ${err}`);
         event.reply(Global.UPLOAD_IMAGE, Global.FAILED_MSG);
       } else {
         const buf = Buffer.from(data);
         fs.writeFile(pathToWrite, buf, (err2) => {
           if (err2) {
-            console.log(`WRITE ERROR: ${err2}`);
             event.reply(Global.UPLOAD_IMAGE, Global.FAILED_MSG);
           } else {
             event.reply(Global.UPLOAD_IMAGE, Global.SUCCESS_MSG);
           }
         });
+      }
+    });
+  }
+
+  static deleteRecordFromImageRepository(
+    imgId: string,
+    event: IpcMainEvent
+  ): void {
+    const indexDeleted = Singleton.deleteImageById(imgId);
+    if (indexDeleted === Global.INITIAL_LOOP_VALUE) {
+      event.reply(Global.DELETE_RECORD, Global.FAILED_MSG);
+    } else {
+      fs.writeFile(
+        IMAGE_REPO_PATH,
+        JSON.stringify(Singleton.imgData),
+        (err2) => {
+          if (err2) {
+            event.reply(Global.DELETE_RECORD, Global.FAILED_MSG);
+          } else {
+            event.reply(Global.DELETE_RECORD, Global.SUCCESS_MSG);
+          }
+        }
+      );
+    }
+  }
+
+  static deleteImageFile(imgName: string, event: IpcMainEvent): void {
+    const pathToDelete = path.join(PATH_IMAGE_DIRECTORY, imgName);
+    fs.unlink(pathToDelete, (err) => {
+      if (err) {
+        event.reply(Global.DELETE_IMAGE, Global.FAILED_MSG);
+      } else {
+        event.reply(Global.DELETE_IMAGE, Global.SUCCESS_MSG);
       }
     });
   }

@@ -8,6 +8,10 @@ class Global {
 
   static UPLOAD_IMAGE: string = 'UPLOAD_IMAGE';
 
+  static DELETE_IMAGE: string = 'DELETE_IMAGE';
+
+  static DELETE_RECORD: string = 'DELETE_RECORD';
+
   static PATH_IMG_DIRECTORY: string = 'PATH_IMG_DIRECTORY';
 
   // Tabs
@@ -30,6 +34,10 @@ class Global {
   static DELETE_ALERT_TITLE: string = 'Borrar foto';
 
   static DELETE_ALERT_BODY: string = '¿Deseas borrar esta foto?';
+
+  // Logic variables
+
+  static INITIAL_LOOP_VALUE: number = -1;
 }
 
 export default Global;

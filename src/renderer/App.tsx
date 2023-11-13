@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import Global from 'utils/global';
-import { Singleton } from 'utils/singleton';
+import { Singleton, froggie } from 'utils/singleton';
 import NavBar from './Components/NavBar/NavBar';
 import HomeTab from './Components/Home/Home';
 import SectionHeader from './Components/Utils/SectionHeader';
@@ -13,6 +13,9 @@ import 'bootstrap/dist/css/bootstrap.css';
 function MainProgram() {
   const [selectedTab, setSelectedTab] = useState('Home');
   const [showModal, setShowModal] = useState(false);
+  const [froggiePhotoList, setFroggiePhotoList] = useState(
+    Singleton.getFroggieImages()
+  );
 
   const handleTabClick = (tabSelected: string) => {
     setSelectedTab(tabSelected);
@@ -33,8 +36,16 @@ function MainProgram() {
               show={showModal}
               onHide={() => setShowModal(false)}
               currentTab={selectedTab}
+              handleUpdatePhotoList={(newList: Array<froggie>) =>
+                setFroggiePhotoList(newList)
+              }
             />
-            <AlbumGrid photoList={Singleton.getFroggieImages()} />
+            <AlbumGrid
+              photoList={froggiePhotoList}
+              onUpdatePhotoList={(newList: Array<froggie>) =>
+                setFroggiePhotoList(newList)
+              }
+            />
             <UploadBtn showModal={() => setShowModal(true)} />
           </>
         );
