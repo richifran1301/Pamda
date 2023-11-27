@@ -32,7 +32,7 @@ function FroggieImage({ imgName, imgId, imgDate, showDeleteAlert }: Props) {
 
   return (
     <div className="froggieWrapper col-lg-3 col-md-4 col-sm-6">
-      <div className="froggieCard">
+      <div className="froggieCard noBkg">
         <button
           type="button"
           className="btn-close deleteBtn"

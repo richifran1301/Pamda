@@ -150,7 +150,6 @@ function UploadModal({
       sendMsgToCopyImageToDirectory();
     } else {
       showUploadStateMsg(Global.FAILED_MSG, 'Foto duplicada.');
-      console.log('Duplicated image');
     }
   };
 

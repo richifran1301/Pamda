@@ -28,3 +28,26 @@
     top: 4px;
     right: 8px;
 }
+
+.heartBkg {
+    background-image: url('../../../assets/backgrounds/heartBkg.jpg');
+}
+
+.froggieBkg {
+    background-image: url('../../../assets/backgrounds/froggieBkg.jpg');
+    background-size: cover;
+}
+
+.starsBkg {
+    background-image: url('../../../assets/backgrounds/starsBkg.jpg');
+    background-size: cover;
+}
+
+.heartStopperBkg {
+    background-image: url('../../../assets/backgrounds/heartstopperBkg.jpg');
+    background-size: cover;
+}
+
+.noBkg {
+    background-color: #FAF8F8;
+}
