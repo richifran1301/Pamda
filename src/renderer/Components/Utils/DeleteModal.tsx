@@ -52,7 +52,7 @@ function DeleteModal({
   const sendMsgToDeleteFile = () => {
     window.electron.ipcRenderer.sendMessage(
       Global.DELETE_IMAGE,
-      elementToDelete.photoName
+      elementToDelete.name
     );
     window.electron.ipcRenderer.once(Global.DELETE_IMAGE, (msg) => {
       if (msg === Global.SUCCESS_MSG) {
