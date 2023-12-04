@@ -35,13 +35,12 @@ class DataHandler {
 
   static copyImageToDirectory(
     file: {
-      photoName: string;
-      photoPath: string;
+      name: string;
     },
     filePath: string,
     event: IpcMainEvent
   ): void {
-    const fileName = file.photoName;
+    const fileName = file.name;
     const pathToWrite = path.join(PATH_IMAGE_DIRECTORY, fileName);
     fs.readFile(filePath, (err, data) => {
       if (err) {

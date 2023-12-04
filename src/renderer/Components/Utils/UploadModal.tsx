@@ -23,7 +23,7 @@ function UploadModal({
   const [fileName, setFileName] = useState('');
   const [filePath, setFilePath] = useState('');
   const [fileDate, setFileDate] = useState('');
-  const [photoTitle, setPhotoTitle] = useState('');
+  const [fileBkg, setFileBkg] = useState(Global.NO_BKG);
   // Upload Btn
   const [btnDisabled, setBtnDisabled] = useState(true);
   // Alert
@@ -32,26 +32,22 @@ function UploadModal({
   const [alertType, setAlertType] = useState('');
 
   const uploadObjectFroggie = {
-    photoName: fileName,
-    photoDate: fileDate,
-    titlePhoto: photoTitle,
+    name: fileName,
+    date: fileDate,
+    bkg: fileBkg,
   };
 
   const clearState = () => {
     setFileName('');
     setFilePath('');
-    setPhotoTitle('');
+    setFileBkg(Global.NO_BKG);
     setBtnDisabled(true);
     setShowAlert(false);
   };
 
-  const checkRequiredFields = (
-    photoTitleEvent: string,
-    filePathEvent: string
-  ) => {
+  const checkRequiredFields = (filePathEvent: string) => {
     const filePathIn = filePathEvent !== '';
-    const photoTitleIn = photoTitleEvent !== '';
-    if (photoTitleIn && filePathIn) {
+    if (filePathIn) {
       setBtnDisabled(false);
     } else {
       setBtnDisabled(true);
@@ -70,12 +66,11 @@ function UploadModal({
     setFilePath(file.path);
     const date = new Date(file.lastModified);
     setFileDate(date.toLocaleDateString('en-GB')); // Format date
-    checkRequiredFields(photoTitle, event.target.files[0].path);
+    checkRequiredFields(event.target.files[0].path);
   };
 
-  const handlePhotoTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPhotoTitle(event.target.value);
-    checkRequiredFields(event.target.value, filePath);
+  const handlePhotoBkgChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFileBkg(event.target.name);
   };
 
   const showUploadStateMsg = (uploadState: string, msgToShow: string) => {
@@ -159,7 +154,8 @@ function UploadModal({
         return (
           <UploadModalContentFroggie
             onFileChange={handleFileChange}
-            onPhotoTitleChange={handlePhotoTitleChange}
+            onPhotoBkgChange={handlePhotoBkgChange}
+            selectedRadio={fileBkg}
           />
         );
       default:

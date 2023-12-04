@@ -29,6 +29,16 @@ class Global {
 
   static HORIZONTAL_PHOTO: string = 'horizontalImg';
 
+  static NO_BKG: string = 'NA';
+
+  static FROG_BKG: string = 'F';
+
+  static HEART_BKG: string = 'H';
+
+  static STARS_BKG: string = 'S';
+
+  static HEART_STOPPER_BKG: string = 'HS';
+
   // Messages
 
   static DELETE_ALERT_TITLE: string = 'Borrar foto';

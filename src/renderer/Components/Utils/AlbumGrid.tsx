@@ -8,8 +8,8 @@ import FroggieImage from '../Froggie/FroggieImage';
 interface Props {
   photoList: Array<{
     id: string;
-    photoName: string;
-    photoDate: string;
+    name: string;
+    date: string;
     photoTitle?: string;
   }>;
   onUpdatePhotoList: (newList: Array<froggie>) => void;
@@ -28,9 +28,9 @@ function AlbumGrid({ photoList, onUpdatePhotoList }: Props) {
     return photoList.map((item) => (
       <FroggieImage
         key={item.id}
-        imgName={item.photoName}
+        imgName={item.name}
         imgId={item.id}
-        imgDate={item.photoDate}
+        imgDate={item.date}
         showDeleteAlert={(id: string) => handleShowDeleteAlert(id)}
       />
     ));

@@ -34,6 +34,8 @@ export class Singleton {
   }
 
   static getFroggieImages(): Array<froggie> {
+    // Check if imgData is null.
+    if (!this.imgData) return [];
     return this.imgData.froggieImages;
   }
 
