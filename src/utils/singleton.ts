@@ -2,9 +2,9 @@ import Global from './global';
 
 export interface froggie {
   id: string;
-  photoName: string;
-  photoTitle: string;
-  photoDate: string;
+  name: string;
+  bkg: string;
+  date: string;
 }
 
 interface dataObject {
@@ -61,7 +61,7 @@ export class Singleton {
     const listLength = list.length;
     let exists = false;
     for (let i = 0; i < listLength; i += 1) {
-      if (fileName === list[i].photoName) {
+      if (fileName === list[i].name) {
         exists = true;
         break;
       }
