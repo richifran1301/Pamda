@@ -140,12 +140,7 @@ function UploadModal({
 
   const handleUploadAction = () => {
     setBtnDisabled(true);
-    const duplicatedName = Singleton.searchForDuplicatedName(fileName);
-    if (!duplicatedName) {
-      sendMsgToCopyImageToDirectory();
-    } else {
-      showUploadStateMsg(Global.FAILED_MSG, 'Foto duplicada.');
-    }
+    sendMsgToCopyImageToDirectory();
   };
 
   const setModalBody = () => {

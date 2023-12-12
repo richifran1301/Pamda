@@ -4,17 +4,26 @@ import { useRef, useState } from 'react';
 import Global from 'utils/global';
 
 interface Props {
-  imgName: string;
   imgDate: string;
   imgId: string;
-  showDeleteAlert: (id: string) => void;
+  imgBkg: string;
+  // eslint-disable-next-line react/require-default-props
+  showDeleteAlert?: (id: string) => void; // Making this as optional to use in upload modal.
 }
-function FroggieImage({ imgName, imgId, imgDate, showDeleteAlert }: Props) {
+
+function FroggieImage({ imgId, imgDate, imgBkg, showDeleteAlert }: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgClass, setImgClass] = useState('imgCard');
   const getImagePath = () => {
-    return `${Singleton.pathToImageDirectory}/${imgName}`;
+    return `${Singleton.pathToImageDirectory}/${imgId}`;
   };
+
+  /*
+    Sets the image orientation based on widht and height.
+    If:
+    Widht > height -> image orientation -> horizontal.
+    Widht < height -> image orientation -> vertical.
+  */
   const onLoad = () => {
     if (!imgRef.current) return;
     const { height } = imgRef.current;
@@ -26,16 +35,42 @@ function FroggieImage({ imgName, imgId, imgDate, showDeleteAlert }: Props) {
     }
   };
 
+  const setImageBkg = () => {
+    switch (imgBkg) {
+      case Global.FROG_BKG:
+        return 'froggieCard froggieBkg';
+
+      case Global.HEART_BKG:
+        return 'froggieCard heartBkg';
+
+      case Global.NO_BKG:
+        return 'froggieCard noBkg';
+
+      case Global.STARS_BKG:
+        return 'froggieCard starsBkg';
+
+      case Global.HEART_STOPPER_BKG:
+        return 'froggieCard heartStopperBkg';
+
+      default:
+        return 'froggieCard heartBkg';
+    }
+  };
+
   const handleShowDeleteAlert = () => {
-    showDeleteAlert(imgId);
+    if (showDeleteAlert !== undefined) {
+      showDeleteAlert(imgId);
+    }
   };
 
   return (
     <div className="froggieWrapper col-lg-3 col-md-4 col-sm-6">
-      <div className="froggieCard noBkg">
+      <div className={setImageBkg()}>
         <button
           type="button"
-          className="btn-close deleteBtn"
+          className={
+            showDeleteAlert === undefined ? 'nonDisplay' : 'btn-close deleteBtn'
+          }
           aria-label="Close"
           onClick={handleShowDeleteAlert}
         />
@@ -43,7 +78,7 @@ function FroggieImage({ imgName, imgId, imgDate, showDeleteAlert }: Props) {
         <img
           src={getImagePath()}
           className={imgClass}
-          alt={imgName}
+          alt={imgId}
           key={imgId}
           ref={imgRef}
           onLoad={onLoad}

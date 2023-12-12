@@ -6,12 +6,7 @@ import DeleteModal from './DeleteModal';
 import FroggieImage from '../Froggie/FroggieImage';
 
 interface Props {
-  photoList: Array<{
-    id: string;
-    name: string;
-    date: string;
-    photoTitle?: string;
-  }>;
+  photoList: Array<froggie>;
   onUpdatePhotoList: (newList: Array<froggie>) => void;
 }
 
@@ -28,7 +23,7 @@ function AlbumGrid({ photoList, onUpdatePhotoList }: Props) {
     return photoList.map((item) => (
       <FroggieImage
         key={item.id}
-        imgName={item.name}
+        imgBkg={item.bkg}
         imgId={item.id}
         imgDate={item.date}
         showDeleteAlert={(id: string) => handleShowDeleteAlert(id)}

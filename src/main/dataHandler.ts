@@ -6,6 +6,8 @@ import Global from '../utils/global';
 
 const IMAGE_REPO_PATH = path.join(__dirname, '../../dataGen', 'imageRepo.json');
 
+let createdFileNameId: string;
+
 const PATH_IMAGE_DIRECTORY = path.join(
   __dirname,
   '../../dataGen',
@@ -22,7 +24,8 @@ class DataHandler {
     imageObject: froggie,
     event: IpcMainEvent
   ): void {
-    imageObject.id = this.createNewId(); // String id. Ex: IMG-13
+    delete imageObject.name; // Delete name property to not save it to data.
+    imageObject.id = createdFileNameId; // String id. Ex: IMG-13
     Singleton.addFroggieElement(imageObject); // Append new Froggie Element.
     fs.writeFile(IMAGE_REPO_PATH, JSON.stringify(Singleton.imgData), (err2) => {
       if (err2) {
@@ -33,6 +36,9 @@ class DataHandler {
     });
   }
 
+  /*
+    Copies image selected from user to dataGen directory.
+  */
   static copyImageToDirectory(
     file: {
       name: string;
@@ -41,11 +47,15 @@ class DataHandler {
     event: IpcMainEvent
   ): void {
     const fileName = file.name;
-    const pathToWrite = path.join(PATH_IMAGE_DIRECTORY, fileName);
+    const extension = fileName.split('.').pop();
+    const fileNameToSave = `${this.createNewId()}.${extension}`; // String id. Ex: IMG-13.jpeg
+    createdFileNameId = fileNameToSave;
+    const pathToWrite = path.join(PATH_IMAGE_DIRECTORY, fileNameToSave);
     fs.readFile(filePath, (err, data) => {
       if (err) {
         event.reply(Global.UPLOAD_IMAGE, Global.FAILED_MSG);
       } else {
+        // Write image data to dataGen/
         const buf = Buffer.from(data);
         fs.writeFile(pathToWrite, buf, (err2) => {
           if (err2) {
@@ -58,6 +68,9 @@ class DataHandler {
     });
   }
 
+  /* 
+    Deletes photo from array inside Singleton.
+  */
   static deleteRecordFromImageRepository(
     imgId: string,
     event: IpcMainEvent
@@ -66,6 +79,7 @@ class DataHandler {
     if (indexDeleted === Global.INITIAL_LOOP_VALUE) {
       event.reply(Global.DELETE_RECORD, Global.FAILED_MSG);
     } else {
+      // Updates imageRepo.json with updated data object.
       fs.writeFile(
         IMAGE_REPO_PATH,
         JSON.stringify(Singleton.imgData),

@@ -2,9 +2,9 @@ import Global from './global';
 
 export interface froggie {
   id: string;
-  name: string;
-  bkg: string;
-  date: string;
+  name?: string; // Not saved in data, thus not required. Only used to get extension of file.
+  bkg: string; // Background selected of photo.
+  date: string; // Date of photo.
 }
 
 interface dataObject {
@@ -14,16 +14,17 @@ interface dataObject {
 
 export class Singleton {
   static imgData: dataObject;
-
-  static pathToImageDirectory: string;
   /* Structure:
       {"idCounter":0, "froggieImages":[]}
   */
+
+  static pathToImageDirectory: string;
 
   static setImgObject(data: dataObject): void {
     this.imgData = data;
   }
 
+  // Only used once to set the Directory path.
   static setPathToImageDirectory(path: string): void {
     this.pathToImageDirectory = path;
   }
@@ -54,19 +55,6 @@ export class Singleton {
     }
     this.imgData.froggieImages.splice(index, 1);
     return index;
-  }
-
-  static searchForDuplicatedName(fileName: string): boolean {
-    const list = this.getFroggieImages();
-    const listLength = list.length;
-    let exists = false;
-    for (let i = 0; i < listLength; i += 1) {
-      if (fileName === list[i].name) {
-        exists = true;
-        break;
-      }
-    }
-    return exists;
   }
 }
 

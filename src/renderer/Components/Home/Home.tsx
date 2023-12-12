@@ -10,10 +10,15 @@ function Home() {
           <div className="col-md-8">
             <h1 className="display-4 fw-bold lh-1">Pamda</h1>
             <p className="lead">
-              Quickly design and customize responsive mobile-first sites with
-              Bootstrap, the world’s most popular front-end open source toolkit,
-              featuring Sass variables and mixins, responsive grid system,
-              extensive prebuilt component s, and powerful JavaScript plugins.
+              El lugar y la ocasión de nuestra primera cita es algo que nunca
+              voy a olvidar. Gracias a ese bubble tea, tuve la inspiración de
+              nombrar este album y me gusta pensar que en ese lugar fue donde
+              empezó nuestra historia. <br />
+              <br /> Estoy muy feliz de poder compartir lo que resta de mi vida
+              con una persona tan maravillosa como vos y espero con ansias de
+              vivir todas las aventuras tan increíbles que nos esperan. Es por
+              esto que pensé que necesitamos un lugar en donde podamos guardar
+              todos nuestros recuerdos como pareja...
             </p>
           </div>
           <div>
