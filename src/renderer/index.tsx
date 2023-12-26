@@ -8,7 +8,7 @@ const root = createRoot(container);
 
 window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
 
-// calling IPC exposed from preload script
+// Get persistent data from imageRepo.json to data object in Singleton.
 window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
   const jsonObject = JSON.parse(arg);
   Singleton.setImgObject(jsonObject);
@@ -17,8 +17,7 @@ window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
 
 window.electron.ipcRenderer.sendMessage(Global.PATH_IMG_DIRECTORY);
 
-// calling IPC exposed from preload script
+// Get path to 'dataGen/photoAlbum'
 window.electron.ipcRenderer.once(Global.PATH_IMG_DIRECTORY, (path) => {
   Singleton.setPathToImageDirectory(path);
-  console.log(Singleton.pathToImageDirectory);
 });

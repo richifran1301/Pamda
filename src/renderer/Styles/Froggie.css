@@ -6,6 +6,10 @@
     padding: 25px;
 }
 
+.froggieImgPreview {
+    margin: 0 auto;
+}
+
 .dateText {
     display: block;
     margin-left: 5px;
@@ -39,8 +43,8 @@
 }
 
 .starsBkg {
-    background-image: url('../../../assets/backgrounds/kirbyBkg.jpg');
-    background-size: cover;
+    background-image: url('../../../assets/backgrounds/kirby_background.jpg');
+    background-size: contain;
 }
 
 .heartStopperBkg {

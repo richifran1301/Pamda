@@ -8,7 +8,7 @@ interface Props {
 function SectionHeader({ title, children }: Props) {
   return (
     <>
-      <div className="mt-4 p-5 rounded text-center">
+      <div className="mt-4 p-4 rounded text-center">
         <h1>{title}</h1>
         {children}
       </div>

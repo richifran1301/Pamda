@@ -48,6 +48,8 @@ class Global {
   // Logic variables
 
   static INITIAL_LOOP_VALUE: number = -1;
+
+  static MOCK_IMG_ID: string = 'MOCK_ID';
 }
 
 export default Global;

@@ -8,13 +8,25 @@ interface Props {
   imgId: string;
   imgBkg: string;
   // eslint-disable-next-line react/require-default-props
+  imgPath?: string; // To use in image preview.
+  // eslint-disable-next-line react/require-default-props
   showDeleteAlert?: (id: string) => void; // Making this as optional to use in upload modal.
 }
 
-function FroggieImage({ imgId, imgDate, imgBkg, showDeleteAlert }: Props) {
+function FroggieImage({
+  imgId,
+  imgDate,
+  imgBkg,
+  imgPath,
+  showDeleteAlert,
+}: Props) {
   const imgRef = useRef<HTMLImageElement>(null);
   const [imgClass, setImgClass] = useState('imgCard');
   const getImagePath = () => {
+    if (imgId === Global.MOCK_IMG_ID) {
+      // Return local image path for image preview in upload modal.
+      return imgPath;
+    }
     return `${Singleton.pathToImageDirectory}/${imgId}`;
   };
 
@@ -57,6 +69,13 @@ function FroggieImage({ imgId, imgDate, imgBkg, showDeleteAlert }: Props) {
     }
   };
 
+  const getCardClassNameBasedOnPreview = () => {
+    if (imgId === Global.MOCK_IMG_ID) {
+      return 'froggieImgPreview col-lg-5 col-md-6 col-sm-8';
+    }
+    return 'froggieWrapper col-lg-3 col-md-4 col-sm-6';
+  };
+
   const handleShowDeleteAlert = () => {
     if (showDeleteAlert !== undefined) {
       showDeleteAlert(imgId);
@@ -64,7 +83,7 @@ function FroggieImage({ imgId, imgDate, imgBkg, showDeleteAlert }: Props) {
   };
 
   return (
-    <div className="froggieWrapper col-lg-3 col-md-4 col-sm-6">
+    <div className={getCardClassNameBasedOnPreview()}>
       <div className={setImageBkg()}>
         <button
           type="button"

@@ -20,6 +20,11 @@ class DataHandler {
     return Global.ID_CONCATENATION + incrementedId;
   }
 
+  /**
+   * Adds a new entry to the Singleton array and saves it to imageRepo.json
+   * @param imageObject -> image object to be uploaded.
+   * @param event -> IPC event for replying to front end.
+   */
   static saveRecordToImageRepository(
     imageObject: froggie,
     event: IpcMainEvent
@@ -36,9 +41,12 @@ class DataHandler {
     });
   }
 
-  /*
-    Copies image selected from user to dataGen directory.
-  */
+  /**
+   * Copies file selected by user to the album directory.
+   * @param file -> file object to be uploaded.
+   * @param filePath -> path of the file to be uploaded.
+   * @param event -> IPC event for replying to front end.
+   */
   static copyImageToDirectory(
     file: {
       name: string;
@@ -68,9 +76,11 @@ class DataHandler {
     });
   }
 
-  /* 
-    Deletes photo from array inside Singleton.
-  */
+  /**
+   * Deletes image entry from the Singleton array.
+   * @param imgId -> id of image to be deleted inside array. Ex: IMG_12.png
+   * @param event -> IPC event for replying to front end.
+   */
   static deleteRecordFromImageRepository(
     imgId: string,
     event: IpcMainEvent
@@ -94,6 +104,11 @@ class DataHandler {
     }
   }
 
+  /**
+   * Deletes image file from directory
+   * @param imgName -> name of image to be deleted
+   * @param event -> IPC event for replying to front end.
+   */
   static deleteImageFile(imgName: string, event: IpcMainEvent): void {
     const pathToDelete = path.join(PATH_IMAGE_DIRECTORY, imgName);
     fs.unlink(pathToDelete, (err) => {

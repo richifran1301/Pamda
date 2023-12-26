@@ -1,5 +1,5 @@
 import { Modal, Button } from 'react-bootstrap';
-import { useState, ChangeEvent } from 'react';
+import { useState } from 'react';
 import Global from 'utils/global';
 import { Singleton, froggie } from 'utils/singleton';
 import Alert from './Alert';
@@ -45,32 +45,28 @@ function UploadModal({
     setShowAlert(false);
   };
 
-  const checkRequiredFields = (filePathEvent: string) => {
-    const filePathIn = filePathEvent !== '';
-    if (filePathIn) {
-      setBtnDisabled(false);
-    } else {
-      setBtnDisabled(true);
-    }
-  };
-
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Check if event.target.files is 'null'
-    if (!event.target.files) return;
-    if (event.target.files.length === 0) {
-      setBtnDisabled(true);
-      return;
-    }
-    const file = event.target.files[0];
-    setFileName(file.name);
-    setFilePath(file.path);
-    const date = new Date(file.lastModified);
+  /**
+   * This will handle whenever the user makes a selection of file from the file explorer.
+   * @param fileNm -> name of file
+   * @param filePth -> path of file
+   * @param fileLM -> last modified value from file. This will be used to calculate the date.
+   * @param btnDsbld -> if the upload button should be disabled or not. Depends on the file selection from user.
+   */
+  const handleFileChange = (
+    fileNm: string,
+    filePth: string,
+    fileLM: number,
+    btnDsbld: boolean
+  ) => {
+    setBtnDisabled(btnDsbld);
+    setFileName(fileNm);
+    setFilePath(filePth);
+    const date = new Date(fileLM);
     setFileDate(date.toLocaleDateString('en-GB')); // Format date
-    checkRequiredFields(event.target.files[0].path);
   };
 
-  const handlePhotoBkgChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setFileBkg(event.target.name);
+  const handlePhotoBkgChange = (bkg: string) => {
+    setFileBkg(bkg);
   };
 
   const showUploadStateMsg = (uploadState: string, msgToShow: string) => {

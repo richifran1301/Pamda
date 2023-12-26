@@ -34,3 +34,10 @@
 .nonDisplay {
     display: none;
 }
+
+.header-msg {
+    text-wrap: balance;
+    width: 60vw;
+    margin: auto;
+    text-align: center;
+}

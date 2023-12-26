@@ -1,5 +1,5 @@
 import React from 'react';
-import homeIcon from '../../../../assets/icons/homeIcon.jpg';
+import homeIcon from '../../../../assets/icons/panda.png';
 import '../../Styles/Home.css';
 
 function Home() {
@@ -8,7 +8,7 @@ function Home() {
       <div className="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
         <div className="p-3 p-lg-5 pt-lg-3 homeContent">
           <div className="col-md-8">
-            <h1 className="display-4 fw-bold lh-1">Pamda</h1>
+            <h1 className="display-4 fw-bold lh-1 home-title">Pamda</h1>
             <p className="lead">
               El lugar y la ocasión de nuestra primera cita es algo que nunca
               voy a olvidar. Gracias a ese bubble tea, tuve la inspiración de
