@@ -82,10 +82,10 @@ function UploadModal({
   };
 
   const updateLocalData = () => {
-    window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
+    window.electron.ipcRenderer.sendMessage(Global.READ_DB);
 
     // calling IPC exposed from preload script
-    window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
+    window.electron.ipcRenderer.once(Global.READ_DB, (arg) => {
       const jsonObject = JSON.parse(arg);
       Singleton.setImgObject(jsonObject);
       handleUpdatePhotoList(Singleton.getFroggieImages());

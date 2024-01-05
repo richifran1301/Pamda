@@ -1,23 +1,37 @@
 import fs from 'fs';
 import path from 'path';
-import { IpcMainEvent } from 'electron';
+import { IpcMainEvent, app } from 'electron';
 import { froggie, Singleton } from '../utils/singleton';
 import Global from '../utils/global';
 
-const IMAGE_REPO_PATH = path.join(__dirname, '../../dataGen', 'imageRepo.json');
-
 let createdFileNameId: string;
 
-const PATH_IMAGE_DIRECTORY = path.join(
-  __dirname,
-  '../../dataGen',
-  'photoAlbum'
-);
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, 'assets')
+  : path.join(__dirname, '../../assets');
+
+const PATH_IMAGE_DIRECTORY = path.join(RESOURCES_PATH, 'dataGen', 'photoAlbum');
+
+const IMAGE_REPO_PATH = path.join(RESOURCES_PATH, 'dataGen', 'imageRepo.json');
 
 class DataHandler {
   static createNewId(): string {
     const incrementedId = Singleton.incrementIdCounter();
     return Global.ID_CONCATENATION + incrementedId;
+  }
+
+  static readRepository(event: IpcMainEvent): void {
+    fs.readFile(IMAGE_REPO_PATH, 'utf8', (err, jsonString) => {
+      if (err) {
+        const errorTemplate = (errorString: string) =>
+          `Read db test failed: ${errorString}`;
+        console.log('File read failed:', err);
+        event.reply(Global.READ_DB, errorTemplate(`Error ${err}`));
+      } else {
+        Singleton.setImgObject(JSON.parse(jsonString));
+        event.reply(Global.READ_DB, jsonString);
+      }
+    });
   }
 
   /**

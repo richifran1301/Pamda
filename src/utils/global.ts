@@ -4,8 +4,6 @@ class Global {
 
   static WRITE_DB: string = 'WRITE_DB';
 
-  static DB_HANDLER: string = 'DB_HANDLER';
-
   static UPLOAD_IMAGE: string = 'UPLOAD_IMAGE';
 
   static DELETE_IMAGE: string = 'DELETE_IMAGE';

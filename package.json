@@ -174,7 +174,7 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
+    "productName": "Pamda",
     "appId": "org.erb.ElectronReact",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
@@ -213,6 +213,7 @@
       ]
     },
     "win": {
+      "icon" : "assets/panda.png",
       "target": [
         "nsis"
       ]
@@ -233,8 +234,8 @@
     ],
     "publish": {
       "provider": "github",
-      "owner": "electron-react-boilerplate",
-      "repo": "electron-react-boilerplate"
+      "owner": "Ricardo Franco",
+      "repo": "Pamda-app"
     }
   },
   "collective": {

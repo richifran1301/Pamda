@@ -10,12 +10,10 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import fs from 'fs';
 import { app, BrowserWindow, shell, ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import Global from '../utils/global';
-import { Singleton } from '../utils/singleton';
 import DataHandler from './dataHandler';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
@@ -30,19 +28,8 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-ipcMain.on(Global.DB_HANDLER, async (event) => {
-  fs.readFile('./dataGen/imageRepo.json', 'utf8', (err, jsonString) => {
-    if (err) {
-      const errorTemplate = (errorString: string) =>
-        `Read db test failed: ${errorString}`;
-      console.log('File read failed:', err);
-      event.reply(Global.DB_HANDLER, errorTemplate(`Error ${err}`));
-    } else {
-      const msgTemplate = (dataString: string) => `${dataString}`;
-      Singleton.setImgObject(JSON.parse(jsonString));
-      event.reply(Global.DB_HANDLER, msgTemplate(jsonString));
-    }
-  });
+ipcMain.on(Global.READ_DB, async (event) => {
+  DataHandler.readRepository(event);
 });
 
 ipcMain.on(Global.UPLOAD_IMAGE, async (event, imageObject, filePath) => {
@@ -107,7 +94,7 @@ const createWindow = async () => {
     show: false,
     width: 1024,
     height: 728,
-    icon: getAssetPath('panda.png'),
+    icon: getAssetPath('/icons/panda.png'),
     webPreferences: {
       webSecurity: false,
       preload: app.isPackaged

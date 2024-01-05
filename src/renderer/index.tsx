@@ -6,10 +6,10 @@ import App from './App';
 const container = document.getElementById('root') as HTMLElement;
 const root = createRoot(container);
 
-window.electron.ipcRenderer.sendMessage(Global.DB_HANDLER);
+window.electron.ipcRenderer.sendMessage(Global.READ_DB);
 
 // Get persistent data from imageRepo.json to data object in Singleton.
-window.electron.ipcRenderer.once(Global.DB_HANDLER, (arg) => {
+window.electron.ipcRenderer.once(Global.READ_DB, (arg) => {
   const jsonObject = JSON.parse(arg);
   Singleton.setImgObject(jsonObject);
   root.render(<App />);

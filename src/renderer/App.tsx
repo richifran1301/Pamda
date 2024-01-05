@@ -31,10 +31,11 @@ function MainProgram() {
             <SectionHeader title="Nuestras fotos">
               <p className="header-msg">
                 Aquí vamos a colocar las fotos que más nos gusten, de todos los
-                momentos que queramos recordar. Fotos como: de nosotros, amigos,
-                lugares, mascotas, objetos random, etc., irán acá. Este va a ser
-                un buen lugar en el que siempre podamos recordar nuestra
-                historia y cuando hemos crecido como personas y como pareja.
+                momentos que queramos recordar. Por ejemplo: fotos de nosotros,
+                amigos, lugares, mascotas, objetos random, etc., irán acá. Este
+                va a ser un buen lugar en el que siempre podamos recordar
+                nuestra historia y cuanto hemos crecido como personas y como
+                pareja.
               </p>
             </SectionHeader>
             <UploadModal
